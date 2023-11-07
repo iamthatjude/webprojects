@@ -11,4 +11,5 @@
 noteplus-lite.zip
 
 # Ignore directories
-noteplus-lite
+PROJECT_BOILERPLATE/
+noteplus-lite/
