@@ -8,5 +8,7 @@
 *.swp
 
 # Ignore files
+noteplus-lite.zip
 
 # Ignore directories
+noteplus-lite
