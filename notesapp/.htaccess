@@ -1,0 +1,88 @@
+# Timezone Setup
+php_value date.timezone 'Africa/Lagos'
+
+# Expired Headers CACHING
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access 1 year"
+    ExpiresByType image/jpeg "access 1 year"
+    ExpiresByType image/gif "access 1 year"
+    ExpiresByType image/png "access 1 year"
+    ExpiresByType image/svg "access 1 year"
+    ExpiresByType text/css "access 1 month"
+    ExpiresByType application/pdf "access 1 month"
+    ExpiresByType application/javascript "access 1 month"
+    ExpiresByType application/x-javascript "access 1 month"
+    ExpiresByType application/x-shockwave-flash "access 1 month"
+    ExpiresByType image/x-icon "access 1 year"
+    ExpiresDefault "access 2 days"
+</IfModule>
+
+<ifModule mod_gzip.c>
+    #mod_gzip_on Yes
+    #mod_gzip_dechunk Yes
+    #mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
+    #mod_gzip_item_include handler ^cgi-script$
+    #mod_gzip_item_include mime ^text/.*
+    #mod_gzip_item_include mime ^application/x-javascript.*
+    #mod_gzip_item_exclude mime ^image/.*
+    #mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
+
+<IfModule mod_deflate.c>
+    #You can uncomment this
+    #AddOutputFilterByType DEFLATE text/plain
+    #AddOutputFilterByType DEFLATE text/html
+    #AddOutputFilterByType DEFLATE text/xml
+    #AddOutputFilterByType DEFLATE text/css
+    #AddOutputFilterByType DEFLATE text/x-component
+    #AddOutputFilterByType DEFLATE application/xml
+    #AddOutputFilterByType DEFLATE application/atom+xml
+    #AddOutputFilterByType DEFLATE application/xhtml+xml
+    #AddOutputFilterByType DEFLATE application/rss+xml
+    #AddOutputFilterByType DEFLATE application/javascript
+    #AddOutputFilterByType DEFLATE application/x-javascript
+    #AddOutputFilterByType DEFLATE application/json
+    #AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    #AddOutputFilterByType DEFLATE application/x-font-ttf
+    #AddOutputFilterByType DEFLATE font/opentype
+    #AddOutputFilterByType DEFLATE image/svg+xml
+    #AddOutputFilterByType DEFLATE image/x-icon
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    Header edit Set-Cookie ^(.*)$ $1;SameSite=None;Secure
+    
+    RewriteEngine On
+
+    #RewriteCond %{HTTPS} !=on
+    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    
+    # Friendly URL
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php
+    #RewriteRule ^(.*)$ $1.php;SameSite=None;Secure
+    #Header edit Set-Cookie ^(.*)$ $1;SameSite=None;Secure
+    
+    # AJAX/VueJS Calls
+    #RewriteRule ^api/c/([a-z_-]+) api/c.php?action=$1 [NC,L] # reference the directory "c.php" is saved in
+    #RewriteRule ^api/m/([a-z_-]+) api/m.php?action=$1 [NC,L] # reference the directory "m.php" is saved in
+</IfModule>
+
+
+# Added Security for PHP Application
+#php_value session.save_path "/uSess"
+#php_value session.save_path "/opt/lampp/htdocs/dir/inprogresswebapp/uSess"
+#php_value session.name "__ipwebapp" #enabled_default
+#php_value session.entropy_length 16 #enabled_default
+
+# **PREVENTING SESSION HIJACKING** || Prevents javascript XSS attacks aimed to steal the session ID
+#php_value session.cookie_httponly 1 #enabled_default
+# **PREVENTING SESSION FIXATION** || Session ID cannot be passed through URLs
+#php_value session.use_only_cookies 1 #enabled_default
+# Uses a secure connection (HTTPS) if possible
+#php_value session.cookie_secure 1 #enabled_default
+# Set the session timeout for 300 seconds = 5 minutes
+#php_value session.gc_maxlifetime 300
+#php_value session.cookie_lifetime 300
