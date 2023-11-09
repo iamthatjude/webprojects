@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Auth.Login.php -- Log In
  */
@@ -7,10 +8,10 @@ ob_start();
 $pageTitle = 'Login'; // Page Title
 
 session_start();
-date_default_timezone_set('Africa/Lagos'); 
+date_default_timezone_set('Africa/Lagos');
 
 // CSRF Protection
-$token = md5( uniqid(rand(), TRUE) . time() );
+$token = md5(uniqid(rand(), TRUE) . time());
 $_SESSION['csrf_token'] = $token;
 $_SESSION['csrf_token_time'] = time();
 
@@ -20,117 +21,108 @@ include '../../system/constants.sys.php'; // Defined Constants
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if ( isset($_SESSION['uid']) ){ // currently logged in | uid: User ID
-	header( 'Location: '. USER_HOME );
+if (isset($_SESSION['uid'])) { // currently logged in | uid: User ID
+    header('Location: ' . USER_HOME);
 }
 
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title><?= $pageTitle . ' ' . $pageSeparator . ' ' . SITE_NAME; ?></title>
-    
-    <link href="<?= ASSETS_URL; ?>css/styles.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="<?= ASSETS_URL; ?>assets/img/favicon.png" />
-    <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<?= ASSETS_URL; ?>assets/images/favicon.ico" />
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/css/backend-plugin.min.css?v=1.0.0">
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/css/backend.css?v=1.0.0">
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="<?= ASSETS_URL; ?>assets/vendor/@icon/dripicons/dripicons.css">
 
 </head>
-<body class="bg-primary">
+<body class=" ">
 
-    <div id="layoutAuthentication">
-        <div id="layoutAuthentication_content">
-            <main>
-                <div class="container-xl px-4">
-                    <div class="row justify-content-center">
+    <!-- loader Start -->
+    <div id="loading">
+        <div id="loading-center">
+        </div>
+    </div>
+    <!-- loader END -->
 
-                        <!-- Login Form -->
-                        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11" id="loginForm">
-                            <!-- Social login form-->
-                            <div class="card my-5">
-                                <div class="card-body p-5 text-center">
-                                    <div class="h3 fw-light mb-3"><?= $pageTitle; ?></div>
+    <div class="wrapper">
+        <section class="login-content">
+            <div class="container h-100">
+                <div class="row justify-content-center align-items-center height-self-center">
+                    <div class="col-md-5 col-sm-12 col-12 align-self-center">
+                        <div class="sign-user_card">
+                            <div class="logo-detail">
+                                <div class="d-flex align-items-center"><img src="<?= ASSETS_URL; ?>assets/images/logo.png" class="img-fluid rounded-normal light-logo logo" alt="logo">
+                                    <h4 class="logo-title ml-3"><?= $pageTitle; ?></h4>
                                 </div>
-                                <hr class="my-0" />
-                                <div class="card-body p-5" id="auth">
-                                    <?php
-                                    // redirect to a page
-                                    if ( isset($_GET['redirect_to']) AND !empty($_GET['redirect_to']) ){
-                                        $redirect_to_page = $_GET['redirect_to'];
-                                        echo "<input type='hidden' id='redirect_to' value='{$redirect_to_page}'>";
-                                    } else {
-                                        echo "<input type='hidden' id='redirect_to' value='".USER_HOME."'>";
-                                    }
-                                    ?>
+                            </div>
+							<?php
+							// redirect to a page
+							if ( isset($_GET['redirect_to']) AND !empty($_GET['redirect_to']) ){
+								$redirect_to_page = $_GET['redirect_to'];
+								echo "<input type='text' id='redirect_to' value='{$redirect_to_page}'>";
+							} else {
+								echo "<input type='text' id='redirect_to' value='".USER_HOME."'>";
+							}
+							?>
+                            <h3 class="mb-2">Sign In</h3>
+                            <p>Login to stay connected.</p>
 
-                                    <!-- Login form-->
-                                    <form v-on:submit.prevent>
-                                        <!-- Form Group (username)-->
-                                        <div class="mb-3">
-                                            <label class="text-gray-600 small">Username</label>
-                                            <input class="form-control form-control-solid" type="text" id="auth_name" name="auth_name" v-model="loginData.auth_name" placeholder="" />
+                            <form v-on:submit.prevent>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="floating-label form-group">
+                                            <input class="floating-input form-control" type="text" id="auth_name" name="auth_name" v-model="loginData.auth_name" placeholder="">
+                                            <label>Username</label>
                                         </div>
-                                        <!-- Form Group (password)-->
-                                        <div class="mb-3">
-                                            <label class="text-gray-600 small">Password</label>
-                                            <div class="input-group input-group-joined">
-                                                <input class="form-control form-control-solid" type="password" id="password" name="password" v-model="loginData.password" placeholder="" />
-                                                <span class="input-group-text">
-                                                    <input class="form-check-input" @click="showPass()" type="checkbox">
-                                                </span>
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="floating-label form-group">
+                                            <input class="floating-input form-control" type="password" id="password" name="password" v-model="loginData.password" placeholder="">
+                                            <span class="input-group-text">
+                                                <input class="form-check-input" @click="showPass()" type="checkbox">
+                                            </span>
+                                            <label>Password</label>
                                         </div>
-                                        <!-- Form Group (forgot password link)-->
-                                        <div class="mb-3"><a class="small" href="<?= USER_RE_PASSWORD; ?>">Forgot your password?</a></div>
-                                        <!-- Form Group (login box)-->
-                                        <div class="d-flex align-items-center justify-content-between mb-0">
-                                            <div class="form-check">
-                                                <input class="form-check-input" id="checkRememberPassword" type="checkbox" value="" />
-                                                <label class="form-check-label" for="checkRememberPassword">Remember password</label>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary" id="btnLogin" @click="checkFields('login', 'user')">Login</button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="custom-control custom-checkbox mb-3 text-left">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Remember Me</label>
                                         </div>
-                                    </form>
-                                </div>
-                                <hr class="my-0" />
-                                <div class="card-body px-5 py-4">
-                                    <div class="small text-center">
-                                        New user?
-                                        <a href="<?= USER_REGISTER; ?>">Create an account!</a>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <a href="<?= USER_RE_PASSWORD; ?>" class="text-primary float-right">Forgot Password?</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                <button type="submit" class="btn btn-primary" id="btnLogin" @click="checkFields('login', 'user')">Sign In</button>
+                                <p class="mt-3 mb-0">
+                                    Create an Account <a href="<?= USER_REGISTER; ?>" class="text-primary"><b>Sign Up</b></a>
+                                </p>
+                            </form>
 
-                        <!-- Login Loader -->
-                        <div class="col-lg-5" id="loginLoader" style="display:none!important;">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-body text-center p-5">
-                                    <div class="spinner-border mb-3" role="status"><span class="visually-hidden">Loading...</span></div>
-                                    <p class="mb-0">Welcome back!</p>
-                                    <p class="mb-0">Redirecting you back to the app...</p>
-                                </div>
-                            </div>
                         </div>
-                        
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </section>
+    </div>
 
-        <!-- Auth Footer -->
-        <?php include 'layout/Auth.footer.layout.php'; ?>
-        <!--/ Auth Footer -->
+    <!-- Auth Footer -->
+    <?php include 'layout/Auth.footer.layout.php'; ?>
+    <!--/ Auth Footer -->
 
-    <script>
+	<script>
         $(document).ready(function(){
             $('#auth_name').focus();
         });
