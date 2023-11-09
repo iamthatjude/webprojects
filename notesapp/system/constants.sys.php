@@ -25,10 +25,10 @@ define( 'USER_LOGOUT', 'Auth.Logout' ); // Log Out
 define( 'USER_REGISTER', 'Auth.Register' ); // Register
 define( 'USER_RE_PASSWORD', 'Auth.ResetPassword' ); // Reset Password
 define( 'USER_UP_PASSWORD', 'Auth.UpdatePassword' ); // Update Password
-define( 'USER_HOME', 'Page.Notes' ); // Homepage/Dashboard
+define( 'USER_HOME', 'Page.Notes' ); // Page: Homepage/Dashboard
 define( 'USER_NOTEBOOKS', 'Notes.Notebooks' ); // Notes: Notebooks
 define( 'USER_BIN', 'Notes.Bin' ); // Notes: Bin
-define( 'USER_PROFILE', 'Page.Profile' ); // Account: Profile
+define( 'USER_PROFILE', 'Page.Profile' ); // Page: Profile
 
 //-- Status
 define( 'STA_404', 'Status.404' ); // Status: Error 404
