@@ -20,7 +20,7 @@
     <!-- app JavaScript -->
     <script src="<?= ASSETS_URL; ?>assets/js/app.js"></script>
 
-    <script src="<?= ASSETS_URL;?>plugins/jquery-3.6.0.min.js"></script>
+    <!-- <script src="<?= ASSETS_URL;?>plugins/jquery-3.6.0.min.js"></script> -->
 
     <script>
         const API = `<?= APP_URL; ?>api/Auth.api`; // API URL
@@ -37,6 +37,7 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     -->
 
+    <script src="<?= APP_URL; ?>vuejs/functions.js"></script>
     <script src="<?= APP_URL; ?>vuejs/vue.js"></script>
     <script src="<?= APP_URL; ?>vuejs/axios.js"></script>
     <script src="<?= APP_URL; ?>vuejs/auth.js"></script>
