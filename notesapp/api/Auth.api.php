@@ -49,7 +49,7 @@ elseif ( $_SERVER['REQUEST_METHOD'] === 'POST' ){
 // 1. Login
 if ( $action == 'login' ){
     $user_type = strip_tags(stripslashes($_POST['user_type'])); // User Type: User | Admin
-    $auth_name = strip_tags(stripslashes($_POST['auth_name'])); // Username
+    $username = strip_tags(stripslashes($_POST['username'])); // Username
     $password = strip_tags($_POST['password']); // Password
 
     $Payload = array(
@@ -61,7 +61,7 @@ if ( $action == 'login' ){
 
     if ( $csrf['error'] == false ){
         if ( $user_type == 'user' ){ // USER
-            $login = $auth->login( $user_type, $auth_name, $password );   
+            $login = $auth->login( $user_type, $username, $password );   
 
             if ( $login ){
                 if ( @$login['auth'] == 'nonexistent' ){ // Account Does Not Exist
