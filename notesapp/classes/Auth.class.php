@@ -43,7 +43,7 @@ class Auth
 
         switch ( $user_type ){
             case "user":
-				$query = $this->db->query( "SELECT uid, username, password, fullname, picture, login_error_count, status FROM ". TBL_USR . " WHERE username=?", [$auth_name] );
+				$query = $this->db->query( "SELECT uid, username, password, fullname, picture, status FROM ". TBL_USR . " WHERE username=?", [$auth_name] );
             	break;
             case "admin":
                 $query = $this->db->query( "SELECT aid, username, password FROM ". TBL_ADM . " WHERE username=?", [$auth_name] );
@@ -57,49 +57,54 @@ class Auth
                 if ( $row->status == 'deleted' || $row->status == 'suspended' ){ // Account Deleted/Suspended
 					$output['auth'] = $row->status;
 				}
-                elseif( password_verify($password, $row->password) ){ // see..password is good :)
-					$token = md5( uniqid(rand(), TRUE) . time() ); // Login Token
+                elseif ( password_verify($password, $row->password) ){ // see..password is good :)
+					//$token = md5( uniqid(rand(), TRUE) . time() ); // Login Token
+					$token = md5( uniqid(rand(), TRUE) . time() ) . randomCodeGenerator('', 100); // Login Token
 
 					if ( $user_type == 'user' ){ // USER
 						// Log In Successful
 						$params = [
 							$token,
+							0,
 							'Yes',
-							$row->uid,
-							$row->username
+							$row->uid
 						];
-						$this->db->query( "UPDATE ". TBL_USR ." SET token=?, online=?, last_login_time=NOW() WHERE uid=? AND username=?", $params );
+						//$this->db->query( "UPDATE ". TBL_USR ." SET token=?, online=?, last_login_time=NOW() WHERE uid=? AND username=?", $params );
+						$this->db->query( "UPDATE ". TBL_ULOGIND ." SET token=?, last_loggedin=NOW(), login_error_count=?, online=? WHERE uid=?", $params );
 						
 						// Log Report
 						$this->db->query( "INSERT INTO ". TBL_ULOG ." (uid, log_detail, created_at) VALUES (?, ?, NOW())", [$row->uid, USERLOG_LOGIN_SUCCESS] );
 
                         $output['auth'] = 'success';
 
-                        $output['uid'] = $row->uid;
+                        $output['uid'] 		= $row->uid;
                         $output['username'] = $row->username;
                         $output['fullname'] = $row->fullname;
-                        $output['picture'] = $row->picture;
-                        $output['token'] = $token;
+                        $output['picture'] 	= $row->picture;
+                        $output['token'] 	= $token;
                     }
                     elseif ( $user_type == 'admin' ){ // ADMIN
                         // Log In Successful
                     }
                 } else { // Username/Password Is Wrong
-					if ( $row->login_error_count == LOGIN_ERRMIN_COUNT ){
+					$login_error_query = $this->db->query( "SELECT ldid, login_error_count FROM ". TBL_ULOGIND . " WHERE uid=?", [$row->uid] );
+					$login_error_row = $login_error_query->fetch(PDO::FETCH_ASSOC);
+
+					if ( $login_error_row['login_error_count'] == LOGIN_ERRMIN_COUNT ){
 						// Increase Login Error Count and Log Report
-						$this->login_error_processesor( $row->uid, $row->username, "", USERLOG_LOGIN_UP_FAILED );
+						$this->login_error_processesor( $row->uid, $login_error_row['ldid'], "", USERLOG_LOGIN_UP_FAILED );
 
                     	$output['auth'] = 'wrong';
 						$output['wrong_message'] = LOGIN_WRONG;
 					}
-					elseif ( $row->login_error_count == LOGIN_ERRMAX_WARN ){
+					elseif ( $login_error_row['login_error_count'] == LOGIN_ERRMAX_WARN ){
 						// Increase Login Error Count and Log Report
-						$this->login_error_processesor( $row->uid, $row->username, "", USERLOG_LOGIN_UP_FAILED );
+						$this->login_error_processesor( $row->uid, $login_error_row['ldid'], "", USERLOG_LOGIN_UP_FAILED );
 
 						$output['auth'] = 'wrong';
 						$output['wrong_message'] = LOGIN_ERRMSG_WARN;
 					}
-					elseif ( $row->login_error_count == LOGIN_ERRMAX_COUNT ){
+					elseif ( $login_error_row['login_error_count'] == LOGIN_ERRMAX_COUNT ){
 						// Suspend Account and Log Report
 						$this->login_error_processesor( $row->uid, $row->username, "suspend", USERLOG_LOGIN_SUSPENDED );
 
@@ -126,7 +131,7 @@ class Auth
 			$this->db->query( "UPDATE ". TBL_USR ." SET status=? WHERE uid=? AND username=?", ["suspended", $user_id, $username] );
 		} else {
 			// Increase Login Error Count
-			$this->db->query( "UPDATE ". TBL_USR ." SET login_error_count=login_error_count+1 WHERE uid=? AND username=?", [$user_id, $username] );
+			$this->db->query( "UPDATE ". TBL_ULOGIND ." SET login_error_count=login_error_count+1 WHERE uid=?", [$user_id] );
 		}
 
 		// Log Error Report
