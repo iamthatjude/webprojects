@@ -28,9 +28,9 @@ define( 'CSRF_NOACCESS', 'You Do Not Have Access!' );
 define( 'LOGIN_NONEXISTENT', 'This Account Doesn\'t Exist!' );
 define( 'LOGIN_CANNOTLOGIN', 'This Account Has Been ' );
 define( 'LOGIN_WRONG', 'Your Login Details Are Incorrect!' );
+define( 'LOGIN_ERRMIN_COUNT', 0 ); // Failed Log In Count Starts Here
 define( 'LOGIN_ERRMAX_WARN', 1 ); // Failed Log In Warning
 define( 'LOGIN_ERRMSG_WARN', 'Your Account Will Be Suspended If Your Next Log In Attempt Fails!' ); // Failed Log In Warning Message
-define( 'LOGIN_ERRMIN_COUNT', 0 ); // Failed Log In Count Starts Here
 define( 'LOGIN_ERRMAX_COUNT', 2 ); // Failed Log In Count then Suspension
 define( 'LOGIN_ERRMSG_COUNT', 'Your Account Has Been Suspended!' ); // Failed Log In Count Message
 define( 'LOGIN_EMAIL_INVALID', 'Your Email Is Not Valid!' );
