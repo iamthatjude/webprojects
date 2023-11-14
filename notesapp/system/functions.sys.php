@@ -77,26 +77,41 @@ function AuthCode($email, $password){
 }
 
 
-// Code Generator
-function CodeGenerator( $type, $characters ){
-    
-    $numbers = "1234567890"; // Numbers
-	$alphaLower = "abcdefghijklmnopqrstuvwxyz"; // Alphabets = Lowercase
-	$alphaUpper = "ABCDEFGHJKLMNOPQRSTUVWXYZ"; // Alphabets = Uppercases
+// Random Code Generator
+function randomCodeGenerator( $type = '', $length ){
+    $code = '';
 
-    if ( $type == 'numbers' ){
-        $seed = str_split( $numbers ); // characters
+    switch ( $type ){
+        case '0': // numbers
+            $characters = "0123456789";
+            break;
+        case 'a': // lowercase letters
+            $characters = "abcdefghijklmnopqrstuwxyz";
+            break;
+        case '0a': // numbers with lowercase letters
+            $characters = "0123456789abcdefghijklmnopqrstuwxyz";
+            break;
+        case 'A': // uppercase letters
+            $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            break;
+        case '0A': // numbers with uppercase letters
+            $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            break;
+        case 'aA': // lowercase with uppercase letters
+            $characters = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            break;
+        default: // numbers with lowercase and uppercase letters
+            $characters = "0123456789abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            break;
     }
-    elseif ( $type == 'mixed' ){
-        $seed = str_split( $alphaUpper . $numbers ); // characters
+
+    for ( $i = 0; $i < $length; $i++ ){
+        $randomIndex = rand(0, strlen($characters) - 1);
+        $code .= $characters[$randomIndex];
     }
-    shuffle($seed); // Shuffle the characters in $randValues
-    $rand = '';
-    foreach (array_rand($seed, $characters) as $k) $rand .= $seed[$k];
- 
-    return $rand;
+
+    return $code;
 }
-
 
 // Image Compressor: compress and save
 function CompressImage( $tmp_filename, $destination, $quality ){
@@ -115,6 +130,24 @@ function CompressImage( $tmp_filename, $destination, $quality ){
         return true;
     } else {
         return false;
+    }
+}
+
+
+// Get Sent Headers
+function getSentHeaders( $option, $header="" ){
+    // option: all | response | sent
+    switch( $option ){
+        case 'request': // get all request headers
+            return getallheaders();
+        case 'response': // get browser response headers
+            return headers_list();
+        case 'sent': // get a sent header
+            foreach( getallheaders() as $name => $value ){
+                if ( $name == $header ){
+                    return $value;
+                }
+            }
     }
 }
 
