@@ -4,7 +4,7 @@ class Database
     private $dbHost = 'localhost'; /** Database Host */
     private $dbUser = 'root'; /** Database Root */
     private $dbPass = ''; /** Databse Password */
-    private $dbName = 'ipwebapp'; /** Database Name */
+    private $dbName = 'webprojects_notesapp'; /** Database Name */
 	private $connection; // Database Connection
 
     /**
