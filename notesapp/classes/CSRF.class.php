@@ -37,9 +37,9 @@ Class CSRF
 		// CSRF Token Validation
 		if ( $data['token'] === $data['csrf_token'] ){
 			// CSRF Token Time Validation
-			$max_time = 60*60*24; // in seconds but it is 24hours
+			//$max_time = 60*60*24; // in seconds but it is 24hours
 	
-			if ( ($data['csrf_token_time'] + $max_time) >= time() ){
+			if ( ($data['csrf_token_time'] + MAX_TIME ) >= time() ){
 				$output['error'] = false;
 			} else {
 				$output['error'] = true;
