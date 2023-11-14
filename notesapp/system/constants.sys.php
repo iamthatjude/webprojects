@@ -6,6 +6,7 @@
 // General Definitions
 define( 'SITE_NAME', 'NotesApp' ); // Site Name - Long
 define( 'SITE_NAME_SHORT', 'NA' ); // Site Name - Short/Initials
+define( 'MAX_TIME', 60*60*24 ); // Maximum Time then Destroy Login Session | in seconds but it is 24hours
 
 
 // Directory Definitions
