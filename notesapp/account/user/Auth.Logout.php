@@ -21,14 +21,14 @@ $user_id = $_SESSION['uid'];
 //$role = $_SESSION['role'];
 $loggedin = $_SESSION["loggedin"];
 
-$query = $db->query( "SELECT uid FROM ". TBL_USR ." WHERE uid=?", [$user_id] );
+$query = $db->query( "SELECT uid FROM ". TBL_ULOGIND ." WHERE uid=?", [$user_id] );
 
 if ( $query->rowCount() > 0 ){
-    $db->query( "UPDATE ". TBL_USR ." SET token=NULL, online='No' WHERE uid=?", [$user_id] );
+    $db->query( "UPDATE ". TBL_ULOGIND ." SET token=NULL, online='No' WHERE uid=?", [$user_id] );
 
     $db->query( "INSERT INTO ". TBL_ULOG ." (uid, log_detail, created_at) VALUES (?, ?, NOW())", [$user_id, "You <b>logged out</b>."] );
 
     session_destroy();
-    header('Location: ' . USER_URL );
+    header('Location: ' . USER_LOGGEDOUT );
 }
 ?>
