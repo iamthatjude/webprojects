@@ -23,6 +23,7 @@ define( 'ACCOUNT_URL', $base_url .'/account/' ); /* never used; might be needed 
 //-- User
 define( 'USER_LOGIN', 'Auth.Login' ); // Log In
 define( 'USER_LOGOUT', 'Auth.Logout' ); // Log Out
+define( 'USER_LOGGEDOUT', 'Auth.Loggedout' ); // Logged Out
 define( 'USER_REGISTER', 'Auth.Register' ); // Register
 define( 'USER_RE_PASSWORD', 'Auth.ResetPassword' ); // Reset Password
 define( 'USER_UP_PASSWORD', 'Auth.UpdatePassword' ); // Update Password
