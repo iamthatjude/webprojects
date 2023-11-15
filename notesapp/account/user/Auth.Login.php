@@ -11,7 +11,9 @@ session_start();
 date_default_timezone_set('Africa/Lagos');
 
 // CSRF Protection
-$token = md5(uniqid(rand(), TRUE) . time());
+include '../../system/functions.sys.php'; // Functions
+//$token = md5(uniqid(rand(), TRUE) . time());
+$token = md5( uniqid(rand(), TRUE) . time() ) . randomCodeGenerator('', 100);
 $_SESSION['csrf_token'] = $token;
 $_SESSION['csrf_token_time'] = time();
 
