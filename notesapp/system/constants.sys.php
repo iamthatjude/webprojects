@@ -21,10 +21,10 @@ define( 'ACCOUNT_URL', $base_url .'/account/' ); /* never used; might be needed 
 //-- Admin
 
 //-- User
-define( 'USER_LOGIN', 'Auth.Login' ); // Log In
-define( 'USER_LOGOUT', 'Auth.Logout' ); // Log Out
-define( 'USER_LOGGEDOUT', 'Auth.Loggedout' ); // Logged Out
-define( 'USER_REGISTER', 'Auth.Register' ); // Register
+define( 'USER_SIGNIN', 'Auth.Signin' ); // Sign In
+define( 'USER_SIGNOUT', 'Auth.Signout' ); // Sign Out
+define( 'USER_SIGNEDOUT', 'Auth.Signedout' ); // Signed Out
+define( 'USER_SIGNUP', 'Auth.Signup' ); // Register
 define( 'USER_RE_PASSWORD', 'Auth.ResetPassword' ); // Reset Password
 define( 'USER_UP_PASSWORD', 'Auth.UpdatePassword' ); // Update Password
 define( 'USER_HOME', 'Page.Notes' ); // Page: Homepage/Dashboard
